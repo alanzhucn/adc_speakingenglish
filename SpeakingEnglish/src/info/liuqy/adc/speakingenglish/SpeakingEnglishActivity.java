@@ -13,6 +13,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -32,7 +33,12 @@ public class SpeakingEnglishActivity extends ListActivity {
     static final String ACTION = "info.liuqy.adc.easynote.EDIT";
     static final String TITLE = "title";
     static final String BODY = "body";
+    
+    static final String TYPE_EN = "myEn";
+    static final String TYPE_CH = "myCh";
 
+    boolean isSpeakingEnglish = true;
+    
     List<String> cns = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     
@@ -93,13 +99,27 @@ public class SpeakingEnglishActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        
+        // receive the intent
+        Intent intentInitial = getIntent();
+        String action = intentInitial.getAction();
+        
+        isSpeakingEnglish = !TYPE_CH.equalsIgnoreCase(action);
+        
+        Toast.makeText(this, action, Toast.LENGTH_SHORT).show();
+        
+        
+        Log.i("Speaking", action);
+        
         // Load  cn2en from xml.
         try {
             exprs = loadExpressionsFromXml(R.xml.cn2en);
         } catch (IOException e) {
-            Toast.makeText(this, R.string.error_xml_file, Toast.LENGTH_SHORT);
+            //TODO: why warning, when we don't add show. how it is detected.
+        	Toast.makeText(this, R.string.error_xml_file, Toast.LENGTH_SHORT).show();
+            
         } catch (XmlPullParserException e) {
-            Toast.makeText(this, R.string.error_parsing_xml, Toast.LENGTH_SHORT);
+            Toast.makeText(this, R.string.error_parsing_xml, Toast.LENGTH_SHORT).show();
         }
 
         //TODO: where is the simple_list_item_1
@@ -155,7 +175,14 @@ public class SpeakingEnglishActivity extends ListActivity {
                         cn = xpp.getText();
                     else if (en == null)
                         en = xpp.getText();
-                    exprs.put(cn, en);
+                    
+                    if (isSpeakingEnglish) {
+                    // cn is key, en is value.
+                        exprs.put(cn, en);
+                    } else {
+                    	exprs.put(en, cn);
+                    }
+                    
                     dfa.reset();
                     cn = en = null;
                 }

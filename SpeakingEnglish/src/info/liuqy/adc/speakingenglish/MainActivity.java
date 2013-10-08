@@ -8,7 +8,7 @@ import android.content.Intent;
 // use the option Content by Intent. based on ApiDemo tabs3.
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends TabActivity {
+public class MainActivity extends TabActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +17,24 @@ public class MainActivity extends TabActivity {
 
         final TabHost tabHost = getTabHost();
 
-        tabHost.addTab(tabHost.newTabSpec("tab1")
-                .setIndicator("En")
-                .setContent(new Intent(this, SpeakingEnglishActivity.class)));
+        {
+        	Intent intentEn = new Intent(this, SpeakingEnglishActivity.class); 
+        	intentEn.setAction(SpeakingEnglishActivity.TYPE_EN);
+        	tabHost.addTab(tabHost.newTabSpec("tab1")
+        			              .setIndicator("En")
+        			              .setContent(intentEn));
+        }
+        
+        {
+        	Intent intentCh = new Intent(this, SpeakingEnglishActivity.class);
 
-        tabHost.addTab(tabHost.newTabSpec("tab2")
-                .setIndicator("Ch")
-                .setContent(new Intent(this, SpeakingEnglishActivity.class)));
+        	intentCh.setAction(SpeakingEnglishActivity.TYPE_CH);
+        	tabHost.addTab(tabHost.newTabSpec("tab2")
+        			              .setIndicator("Ch")
+        		                  .setContent(intentCh));
+        }
+        
+        //TODO: set activated tab.
 
     }
 }
