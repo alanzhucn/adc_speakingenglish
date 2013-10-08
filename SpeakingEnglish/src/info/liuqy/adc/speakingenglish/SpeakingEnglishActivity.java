@@ -40,8 +40,15 @@ public class SpeakingEnglishActivity extends ListActivity {
 	Map<String, String> exprs = null;
 	
     private class DFA {
+    	
+    	// state machine state for parsing the xml file that stores the English/Chinese.
         private static final int INIT_STATE = 0, EXPR_TAG = 1, CN_TAG = 2, EN_TAG = 3, CN_TEXT = 4, EN_TEXT = 5, PRE_FINAL = 6, FINAL_STATE = 7;
+        
         int currentState = 0;
+        
+        // the state machine.
+        //     <state   <event, next state>>
+        //TODO: check the difference between HashMap and SparseArray
         Map<Integer, Map<String, Integer>> T = new HashMap<Integer, Map<String, Integer>>();
         public DFA() {
             Map<String, Integer> m = new HashMap<String, Integer>();
@@ -86,6 +93,7 @@ public class SpeakingEnglishActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+        // Load  cn2en from xml.
         try {
             exprs = loadExpressionsFromXml(R.xml.cn2en);
         } catch (IOException e) {
@@ -94,6 +102,10 @@ public class SpeakingEnglishActivity extends ListActivity {
             Toast.makeText(this, R.string.error_parsing_xml, Toast.LENGTH_SHORT);
         }
 
+        //TODO: where is the simple_list_item_1
+        //   android.R.layout.simple_list_item_1 is defined in android 
+        //   system.   
+        // \frameworks\base\core\res\res\layout\simple_list_item_1.xml
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, cns);
         this.setListAdapter(adapter);
@@ -107,7 +119,7 @@ public class SpeakingEnglishActivity extends ListActivity {
         for (String cn : exprs.keySet()) {
             cns.add(cn);
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();  // data changed --> update view
     }
 
     @Override
@@ -115,6 +127,8 @@ public class SpeakingEnglishActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
         TextView tv = (TextView)v;
         String text = tv.getText().toString();
+        
+        //TODO: sounds a bug.. if not, then?
         if (exprs.containsKey(text)) //Chinese displayed now
             tv.setText(exprs.get(text));
         else //English displayed now, refresh the display
@@ -158,12 +172,19 @@ public class SpeakingEnglishActivity extends ListActivity {
         return super.onCreateOptionsMenu(menu);
     }
     
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.show_about) {
+        	
+        	//TODO: is this new activity created every time or reused?
+        	
+        	// start the About activity
             Intent i = new Intent(this, AboutActivity.class);
             this.startActivityForResult(i, SpeakingEnglishActivity.RATING_ACTION);
         } else if (item.getItemId() == R.id.call_us) {
+        	
+        	// start the call activity
             Intent i = new Intent();
             i.setAction(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:40060088888"));
@@ -173,10 +194,12 @@ public class SpeakingEnglishActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // handle the Activity Result.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         
+        // 
         if (requestCode == SpeakingEnglishActivity.RATING_ACTION
                 && resultCode == SpeakingEnglishActivity.RESULT_OK) {
             float rating = data.getFloatExtra(AboutActivity.RATING, 0.0f);
@@ -186,6 +209,7 @@ public class SpeakingEnglishActivity extends ListActivity {
             }
         } else if (requestCode == SpeakingEnglishActivity.EDIT_ACTION
                 && resultCode == SpeakingEnglishActivity.RESULT_OK) {
+        	//TODO: what is it?
             String cn = data.getStringExtra(TITLE);
             String en = data.getStringExtra(BODY);
             exprs.put(cn, en);
@@ -194,6 +218,7 @@ public class SpeakingEnglishActivity extends ListActivity {
 
     }
 
+    //TODO: this is wrong context for this activity.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
@@ -202,6 +227,7 @@ public class SpeakingEnglishActivity extends ListActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
+    // ??? what is it?
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.edit_todo) {

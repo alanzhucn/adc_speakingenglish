@@ -5,13 +5,13 @@
     <string name="app_name">SpeakingEnglish</string>
     <string name="error_xml_file">XML file corrupted!</string>
     <string name="error_parsing_xml">Cannot parse XML file!</string>
+    
+    <!-- make it shorter as a small screen cannot display all the information -->
     <string name="about_us"><b>About NB Infinity Inc</b>
-    NB Infinity Inc, i.e. <i>NBII</i>, is a cross-universe company which promotes communications between planets.
-    We are developing cutting-edge state-of-the-art technologies and applications to ease the cross-planet talks.
-    We are devoting to universal peace and against universal wars between planets.
+    NB Infinity Inc, i.e. <i>NBII</i>, is NBI.
     </string>
     <string name="about">About</string>
-    <string name="we_are_NB">%1$.1f is the NB-est among the universe!</string>
+    <string name="we_are_NB">%1$.1f is the NB-est!</string>
     <string name="edit">Edit</string>
     <string name="call_us">Call us</string>
         
