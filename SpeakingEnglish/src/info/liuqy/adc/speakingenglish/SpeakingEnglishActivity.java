@@ -11,6 +11,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -216,9 +217,31 @@ public class SpeakingEnglishActivity extends ListActivity {
             i.setAction(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:40060088888"));
             startActivity(i);
+        } else if (item.getItemId() == R.id.clear_tab) {
+        	this.clearTab();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    
+    /**
+     * clear data saved in SharedPreferences.
+     */
+    public void clearTab () {
+    	
+    	//TODO: introduce a flag to indidate if we need to clear data.
+    	SharedPreferences settings = getSharedPreferences(MainActivity.PREFERENCE_NAME, 0);
+    	
+    	if (!"tab0".equalsIgnoreCase(settings.getString(MainActivity.SAVED_TAB, "tab0"))) {
+    	
+        	SharedPreferences.Editor editor = settings.edit();
+        	
+        	editor.remove(MainActivity.SAVED_TAB);
+        	
+        	editor.commit();
+        	
+        	Log.i("Speaking", "clearTab");
+        }
     }
 
     // handle the Activity Result.

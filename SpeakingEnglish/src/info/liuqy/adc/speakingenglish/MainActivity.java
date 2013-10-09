@@ -2,13 +2,19 @@ package info.liuqy.adc.speakingenglish;
 
 import android.app.TabActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 // use the option Content by Intent. based on ApiDemo tabs3.
 
 @SuppressWarnings("deprecation")
-public class MainActivity extends TabActivity  {
+public class MainActivity extends TabActivity implements OnTabChangeListener {
+	
+	static final String PREFERENCE_NAME = "setting";
+	static final String SAVED_TAB = "language";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,73 @@ public class MainActivity extends TabActivity  {
         }
         
         //TODO: set activated tab.
+        int index = 0;
+        
+        SharedPreferences settings = getSharedPreferences(PREFERENCE_NAME, 0);
+        
+        
+        String savedTab  = settings.getString(SAVED_TAB, "tab0");
+        
+        Log.i("mainABC", "OnCreate:" + savedTab);
+        
+        if ("tab1".equalsIgnoreCase(savedTab)) {
+        	index = 0;
+        } else if ("tab2".equalsIgnoreCase(savedTab)) {
+        	index = 1;
+        } else {
+            Log.i("mainABC", "OnCreate: no saved data");
+            index = 0;
+        }
+        
+        tabHost.setCurrentTab(index);
+    }
+    
+    @Override
+    public void onTabChanged(String tabId) {
+    	Log.i("mainABC", "onTabChanged:" + tabId);
+    	
+    	// save the tab?  
+    	//TODO: why not called?
+    	
+    }
+    
+    @Override
+    protected void onPause() {
+    
+    	// save the data.
+    	
+    	TabHost tabHost = getTabHost();
+    	String currentTab = tabHost.getCurrentTabTag();
+    	Log.i("mainABC", "OnPause:" + currentTab);
+    	SharedPreferences settings = getSharedPreferences(PREFERENCE_NAME, 0);
+    	
+    	if (!currentTab.equalsIgnoreCase(settings.getString(SAVED_TAB, "tab0"))) {
+    	
+        	SharedPreferences.Editor editor = settings.edit();
+        	
+        	editor.putString(SAVED_TAB, currentTab);
+        	
+        	editor.commit();
+        	
+        	Log.i("mainABC", "OnPause: save " + currentTab);
 
+    	}
+    	
+    	super.onPause();
+    }
+    
+    public void clearTab () {
+    	
+    	SharedPreferences settings = getSharedPreferences(PREFERENCE_NAME, 0);
+    	
+    	if (!"tab0".equalsIgnoreCase(settings.getString(SAVED_TAB, "tab0"))) {
+    	
+        	SharedPreferences.Editor editor = settings.edit();
+        	
+        	editor.remove(SAVED_TAB);
+        	
+        	editor.commit();
+        	
+        }
     }
 }

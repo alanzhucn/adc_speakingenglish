@@ -19,9 +19,19 @@ Implement the translation from English to Chinese characters + pinyin.
 Put the original Chinese to English translation to one tab,
 and English to Chinese translation to another tab.
 
+
+[Alan] Use Content By Intent to impl the two Tab. Activity MainActivity is from TabActivity.
+It creates two tabs, each contains one Activity SpeakingEnglishActivity.
+The activity SpeakingEnglishActivity extracts language from intent to determine it is for
+english or chinese.  "Pinyin" is not done.
+
+
 ### Remeber the last active tab.
 Automatically switch to the last active tab when the application restarts.
 If there is no remembered last active tab, choose the best tab fitting into the language setting of the phone.
+
+[Alan] save tab via ShrePreference.  onCreate and onPause are the hooks.
+"If there is no remembered last active tab, choose the best tab fitting into the language setting of the phone." is not done.
 
 Submission
 ---
