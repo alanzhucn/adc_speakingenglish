@@ -20,7 +20,8 @@ Put the original Chinese to English translation to one tab,
 and English to Chinese translation to another tab.
 
 
-[Alan] Use Content By Intent to impl the two Tab. Activity MainActivity is from TabActivity.
+[Alan] Use Content By Intent to impl the two Tab. 
+Main Activity MainActivity is from TabActivity.
 It creates two tabs, each contains one Activity SpeakingEnglishActivity.
 The activity SpeakingEnglishActivity extracts language from intent to determine it is for
 english or chinese.  "Pinyin" is not done.
