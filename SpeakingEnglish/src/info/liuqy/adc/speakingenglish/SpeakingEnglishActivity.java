@@ -110,6 +110,8 @@ public class SpeakingEnglishActivity extends ListActivity {
         Toast.makeText(this, action, Toast.LENGTH_SHORT).show();
         
         
+        System.out.println("Speaking: OnCreate");
+        
         Log.i("Speaking", action);
         
         // Load  cn2en from xml.

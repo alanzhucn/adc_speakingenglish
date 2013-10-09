@@ -60,17 +60,21 @@ public class MainActivity extends TabActivity implements OnTabChangeListener {
         }
         
         tabHost.setCurrentTab(index);
+        
+        // Let activity to handle onTabChanged directly as we implements the
+        // OnTabChangeListener interface. Alternative is to
+        // have an in-line OnTabChangeListener instance.
+    	//  http://www.oschina.net/question/54100_32483
+    	//  mTabHost.setOnTabChangedListener(new OnTabChangeListener()
+        tabHost.setOnTabChangedListener(this);
     }
     
     @Override
     public void onTabChanged(String tabId) {
     	Log.i("mainABC", "onTabChanged:" + tabId);
-    	
-    	// save the tab?  
-    	//TODO: why not called?
-    	
     }
-    
+
+    // TODO: how about to put it in OnStop ?
     @Override
     protected void onPause() {
     
